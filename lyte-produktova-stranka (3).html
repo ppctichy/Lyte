@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LYTE5 — Functional Hydration Drink | SOR GEAR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0A0A0A;
+    --ink:#1D1D1B;
+    --bg:#0A0A0A;
+    --bg-2:#141414;
+    --bg-3:#1C1C1C;
+    --white:#FFFFFF;
+    --muted:#9F9F9F;
+    --muted-2:#6B6B6B;
+    --line:#FFFFFF18;
+    --line-2:#FFFFFF2A;
+    --accent:#F4E300;
+    --accent-ink:#0A0A0A;
+    --r:14px;
+    --maxw:1120px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--white);font-family:'Hanken Grotesk',sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px}
+  h1,h2,h3{font-family:'Archivo',sans-serif;font-weight:900;line-height:1;letter-spacing:-.02em;text-transform:uppercase}
+  section{padding:96px 0;border-bottom:1px solid var(--line);position:relative}
+  ::selection{background:var(--accent);color:var(--accent-ink)}
+  sup{font-family:'IBM Plex Mono';font-size:.62em;color:var(--accent);font-weight:600}
+
+  .logo{display:inline-block;color:var(--white);line-height:0;text-decoration:none}
+  .logo svg{height:34px;width:auto;display:block;fill:currentColor}
+  .logo.lg svg{height:52px}
+
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.2em;color:var(--accent);margin-bottom:22px}
+  .eyebrow::before{content:"";width:24px;height:2px;background:var(--accent);display:inline-block}
+  .big{font-size:clamp(30px,4.6vw,52px)}
+  .sub{color:var(--muted);max-width:680px;margin-top:20px;font-size:18px}
+  .h-lead{max-width:720px}
+
+  .topbar{display:flex;justify-content:space-between;align-items:center;padding:22px 0;border-bottom:1px solid var(--line)}
+  .topbar .tag{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;color:var(--muted-2);text-transform:uppercase}
+
+  .grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:48px}
+  .el{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);padding:24px 20px;position:relative;overflow:hidden;transition:transform .35s,border-color .35s}
+  .el:hover{transform:translateY(-6px);border-color:var(--line-2)}
+  .el .amt{font-family:'Archivo';font-weight:900;font-size:26px;color:var(--accent);line-height:1}
+  .el .amt .u{font-size:13px;color:var(--muted)}
+  .el .sym{font-family:'IBM Plex Mono';font-size:12px;color:var(--muted-2);margin-top:6px}
+  .el .nm{font-family:'Archivo';font-weight:800;font-size:16px;text-transform:uppercase;margin:14px 0 6px}
+  .el .role{font-size:13.5px;color:var(--muted);line-height:1.45}
+  .el .rhp{font-family:'IBM Plex Mono';font-size:11px;color:var(--muted-2);margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
+  .vits{display:flex;gap:14px;margin-top:20px;flex-wrap:wrap}
+  .vit{flex:1;min-width:240px;background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:18px 22px;display:flex;align-items:center;gap:18px}
+  .vit .v{font-family:'Archivo';font-weight:900;font-size:24px;color:var(--accent);line-height:1;white-space:nowrap}
+  .vit .v small{font-size:13px;color:var(--muted);font-weight:500}
+  .vit p{font-size:13.5px;color:var(--muted);line-height:1.4}
+  .vit p b{color:#fff}
+
+  .deh{display:grid;grid-template-columns:1.05fr 1fr;gap:46px;align-items:start;margin-top:48px}
+  .ruler{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);padding:30px}
+  .ruler .lvl{display:flex;align-items:center;gap:18px;padding:15px 0;border-bottom:1px dashed var(--line)}
+  .ruler .lvl:last-child{border-bottom:0}
+  .pct{font-family:'Archivo';font-weight:900;font-size:26px;min-width:80px;color:#fff}
+  .pct.warn{color:var(--accent)}
+  .pct.bad{color:var(--accent);opacity:.65}
+  .lvl p{font-size:14px;color:var(--muted)}
+  .deh ul{list-style:none;display:grid;gap:16px}
+  .deh li{display:flex;gap:14px;font-size:15.5px;align-items:flex-start;color:#d4d4d4}
+  .deh li b{color:#fff}
+  .deh li .n{font-family:'IBM Plex Mono';color:var(--accent);font-weight:600;font-size:15px;margin-top:2px}
+  .risks{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px}
+  .risk{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);padding:24px;border-left:3px solid var(--accent)}
+  .risk h3{font-family:'Archivo';font-weight:900;font-size:17px;text-transform:uppercase;margin-bottom:10px}
+  .risk p{font-size:14.5px;color:var(--muted)}
+  .risk p b{color:#fff}
+
+  .uses{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:48px}
+  .use{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);padding:30px;transition:transform .35s,border-color .35s}
+  .use:hover{transform:translateY(-5px);border-color:var(--line-2)}
+  .use .tag{font-family:'IBM Plex Mono';font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  .use h3{font-size:20px;margin:11px 0 8px}
+  .use p{font-size:15px;color:var(--muted)}
+
+  .claims{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:48px}
+  .claim{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);padding:26px 24px;transition:border-color .35s}
+  .claim:hover{border-color:var(--line-2)}
+  .claim .ch{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;border-bottom:1px solid var(--line);padding-bottom:14px;gap:10px}
+  .claim .ch h3{font-family:'Archivo';font-weight:900;font-size:20px;text-transform:uppercase}
+  .claim .ch .sym{font-family:'IBM Plex Mono';font-size:12px;color:var(--accent);font-weight:600}
+  .claim ul{list-style:none;display:grid;gap:10px}
+  .claim li{font-size:14.5px;color:var(--muted);line-height:1.45;padding-left:18px;position:relative}
+  .claim li::before{content:"";position:absolute;left:0;top:9px;width:8px;height:2px;background:var(--accent)}
+  .claim li b{color:#fff;font-weight:600}
+  .sodium{margin-top:20px;background:var(--bg-2);border:1px dashed var(--line-2);border-radius:var(--r);padding:22px 24px;display:flex;align-items:flex-start;gap:18px}
+  .sodium .lbl{font-family:'Archivo';font-weight:900;font-size:22px;text-transform:uppercase;color:#fff;min-width:140px}
+  .sodium .lbl small{display:block;font-size:11px;color:var(--accent);font-family:'IBM Plex Mono';font-weight:600;margin-top:4px}
+  .sodium p{font-size:14.5px;color:var(--muted);line-height:1.5}
+  .sodium p b{color:#fff}
+
+  .faq{margin-top:42px;border-top:1px solid var(--line)}
+  details{border-bottom:1px solid var(--line)}
+  summary{list-style:none;cursor:pointer;padding:24px 4px;font-family:'Archivo';font-weight:700;font-size:18px;text-transform:uppercase;letter-spacing:-.01em;display:flex;justify-content:space-between;gap:20px;align-items:center;transition:color .25s}
+  summary:hover{color:var(--accent)}
+  summary::-webkit-details-marker{display:none}
+  summary .pl{font-family:'IBM Plex Mono';color:var(--accent);transition:transform .3s;flex:0 0 auto;font-weight:400;font-size:22px}
+  details[open] summary .pl{transform:rotate(45deg)}
+  details p{padding:0 4px 26px;color:var(--muted);font-size:15.5px;max-width:820px}
+  details p b{color:#fff}
+
+  .refs{background:var(--bg-2)}
+  .refs ol{margin-top:30px;padding-left:0;list-style:none;counter-reset:r;display:grid;gap:11px;max-width:920px}
+  .refs li{counter-increment:r;font-size:13px;color:var(--muted);line-height:1.55;padding-left:42px;position:relative}
+  .refs li::before{content:counter(r);position:absolute;left:0;top:0;font-family:'IBM Plex Mono';font-size:11px;font-weight:700;color:var(--accent-ink);background:var(--accent);width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center}
+  .refs em{color:#fff;font-style:normal;font-weight:600}
+  .disc{font-size:12.5px;color:var(--muted-2);max-width:920px;margin-top:32px;padding:20px 22px;border:1px dashed var(--line);border-radius:14px;line-height:1.6}
+  .disc b{color:#fff}
+
+  .ft{padding:60px 0 70px;text-align:center}
+  .ft .logo{justify-content:center}
+  .ft .keep{font-family:'Archivo';font-weight:900;text-transform:uppercase;letter-spacing:.06em;font-size:14px;color:var(--muted-2);margin-top:18px}
+  .ft .co{font-size:13px;color:var(--muted-2);margin-top:22px;line-height:1.7}
+
+  .rv{opacity:0;transform:translateY(22px);transition:opacity .7s,transform .7s cubic-bezier(.2,.7,.2,1)}
+  .rv.in{opacity:1;transform:none}
+
+  /* Block heading within section */
+  .block-h{font-family:'Archivo';font-weight:900;font-size:22px;text-transform:uppercase;letter-spacing:-.01em;margin:62px 0 22px;display:flex;align-items:center;gap:14px}
+  .block-h::before{content:"";width:32px;height:2px;background:var(--accent)}
+
+  /* Dosing callout */
+  .dosing{margin-top:48px;background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:grid;grid-template-columns:1fr 1.4fr}
+  .dos-main{padding:46px 40px;background:var(--bg-3);border-right:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+  .dos-main::after{content:"";position:absolute;width:280px;height:280px;border-radius:50%;background:var(--accent);filter:blur(120px);opacity:.13;right:-90px;bottom:-90px}
+  .dos-num{font-family:'Archivo';font-weight:900;font-size:clamp(64px,11vw,116px);line-height:.9;color:var(--accent);letter-spacing:-.04em;position:relative}
+  .dos-lab{font-family:'Archivo';font-weight:900;font-size:18px;text-transform:uppercase;color:#fff;letter-spacing:.02em;margin-top:10px;position:relative}
+  .dos-side{padding:36px 40px;display:flex;flex-direction:column;gap:18px;justify-content:center}
+  .dos-side p{font-size:15px;color:var(--muted);line-height:1.55}
+  .dos-side p b{color:#fff;font-weight:600}
+
+  /* Timeline */
+  .timeline{display:grid;grid-template-columns:repeat(4,1fr);position:relative;background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);padding:36px 30px}
+  .timeline::before{content:"";position:absolute;left:46px;right:46px;top:80px;height:2px;background:var(--line);z-index:1}
+  .timeline .step{padding:0 14px;position:relative;z-index:2}
+  .timeline .t{font-family:'IBM Plex Mono';font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted-2);font-weight:600;margin-bottom:18px;min-height:30px;line-height:1.3}
+  .timeline .dot{width:14px;height:14px;border-radius:50%;background:var(--accent);border:3px solid var(--bg-2);margin-bottom:20px;position:relative;z-index:3}
+  .timeline h4{font-family:'Archivo';font-weight:900;font-size:16px;text-transform:uppercase;margin-bottom:8px;letter-spacing:-.01em}
+  .timeline p{font-size:13.5px;color:var(--muted);line-height:1.45}
+
+  /* Scenarios */
+  .scens{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px}
+  .scen{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);padding:22px 20px;transition:transform .35s,border-color .35s}
+  .scen:hover{transform:translateY(-4px);border-color:var(--line-2)}
+  .scen .tg{font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:10px;display:block}
+  .scen p{font-size:14px;color:var(--muted);line-height:1.45}
+  .scen p b{color:#fff}
+
+  /* Block sub-paragraph */
+  .block-sub{color:var(--muted);font-size:14.5px;max-width:680px;margin:-12px 0 28px;line-height:1.55}
+
+  /* Why a can — vs comparison */
+  .vs{margin-top:48px;display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .vs-side{padding:34px 32px;display:flex;flex-direction:column}
+  .vs-side.bad{background:var(--bg-2)}
+  .vs-side.good{background:var(--bg-3);border-left:1px solid var(--line)}
+  .vs-side .vh{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--line);gap:12px}
+  .vs-side .vh h3{font-family:'Archivo';font-weight:900;font-size:22px;text-transform:uppercase;letter-spacing:-.01em}
+  .vs-side .vh .lbl{font-family:'IBM Plex Mono';font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;flex-shrink:0;line-height:1.3;text-align:right;max-width:130px}
+  .vs-side.bad .vh .lbl{color:var(--muted-2)}
+  .vs-side.good .vh .lbl{color:var(--accent)}
+  .vs-side ul{list-style:none;display:grid;gap:12px}
+  .vs-side li{font-size:14.5px;color:var(--muted);line-height:1.5;padding-left:24px;position:relative}
+  .vs-side.bad li::before{content:"×";position:absolute;left:0;top:-3px;color:var(--muted-2);font-weight:700;font-size:18px}
+  .vs-side.good li::before{content:"+";position:absolute;left:0;top:-2px;color:var(--accent);font-weight:900;font-size:16px}
+  .vs-side.good li b{color:#fff}
+
+  /* Feature pills */
+  .feats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px}
+  .feat{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:20px}
+  .feat .ft{font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:6px}
+  .feat .fl{font-family:'Archivo';font-weight:900;font-size:17px;text-transform:uppercase;line-height:1.15}
+  .feat p{font-size:13px;color:var(--muted);line-height:1.45;margin-top:8px}
+
+  /* Activity translator */
+  .atrans{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .acard{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);padding:24px 22px;display:flex;flex-direction:column;transition:border-color .35s,transform .35s}
+  .acard:hover{border-color:var(--line-2);transform:translateY(-4px)}
+  .acard .atype{font-family:'Archivo';font-weight:800;font-size:16px;text-transform:uppercase;letter-spacing:-.01em;line-height:1.15;margin-bottom:6px}
+  .acard .actx{font-family:'IBM Plex Mono';font-size:11px;color:var(--muted-2);letter-spacing:.05em;text-transform:uppercase;margin-bottom:22px;line-height:1.4}
+  .acard .aloss{font-family:'Archivo';font-weight:900;font-size:24px;color:var(--accent);line-height:1;letter-spacing:-.02em}
+  .acard .aloss span{font-size:11px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.06em;display:block;margin-top:6px;font-family:'IBM Plex Mono'}
+  .acard .acans{margin-top:auto;padding-top:18px;border-top:1px solid var(--line);font-family:'IBM Plex Mono';font-size:12.5px;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;gap:10px}
+  .acard .acans::before{content:"→";color:var(--accent);font-family:'Archivo';font-weight:900;font-size:16px}
+  .adisc{margin-top:20px;font-size:13px;color:var(--muted);max-width:820px;line-height:1.55;border-left:2px solid var(--accent);padding:6px 0 6px 16px}
+  .adisc b{color:#fff}
+
+  /* Neutral physiology stats grid */
+  .fstats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:48px}
+  .fstat{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);padding:28px 26px;transition:border-color .35s}
+  .fstat:hover{border-color:var(--line-2)}
+  .fstat .num{font-family:'Archivo';font-weight:900;font-size:38px;color:var(--accent);line-height:1;letter-spacing:-.03em}
+  .fstat .num .u{font-size:15px;color:var(--muted);font-weight:700}
+  .fstat .lb{font-family:'Archivo';font-weight:800;font-size:14px;text-transform:uppercase;color:#fff;margin-top:16px;letter-spacing:-.01em;line-height:1.2}
+  .fstat p{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.45}
+
+  @media(max-width:920px){
+    .grid5{grid-template-columns:repeat(2,1fr)}
+    .deh{grid-template-columns:1fr;gap:30px}
+    .uses{grid-template-columns:1fr}
+    .claims{grid-template-columns:1fr}
+    .risks{grid-template-columns:1fr}
+    .sodium{flex-direction:column;gap:10px}
+    .dosing{grid-template-columns:1fr}
+    .dos-main{border-right:0;border-bottom:1px solid var(--line);padding:36px 30px}
+    .dos-side{padding:30px}
+    .timeline{grid-template-columns:1fr;padding:24px}
+    .timeline::before{display:none}
+    .timeline .step{padding:20px 0;border-bottom:1px dashed var(--line)}
+    .timeline .step:last-child{border-bottom:0}
+    .timeline .dot{display:none}
+    .timeline .t{margin-bottom:8px;min-height:auto}
+    .scens{grid-template-columns:1fr 1fr}
+    .vs{grid-template-columns:1fr}
+    .vs-side.good{border-left:0;border-top:1px solid var(--line)}
+    .feats{grid-template-columns:1fr 1fr}
+    .atrans{grid-template-columns:1fr 1fr}
+    .fstats{grid-template-columns:1fr 1fr}
+    section{padding:68px 0}
+  }
+  @media(max-width:540px){
+    .scens{grid-template-columns:1fr}
+    .feats{grid-template-columns:1fr}
+    .atrans{grid-template-columns:1fr}
+    .fstats{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="lyte5" viewBox="0 0 283.46 141.73">
+    <polygon points="60.59 48.05 48.79 48.05 48.79 94.22 79.76 94.22 79.83 83.91 60.59 83.91 60.59 48.05"/>
+    <polygon points="115.87 48.05 102.56 48.05 102.51 48.05 91.31 67.23 80.11 48.05 66.52 48.05 85.33 78.76 85.33 94.22 92.04 94.22 97.21 94.22 97.21 78.3 109.51 58.35 119.07 58.35 119.07 94.22 130.94 94.22 130.94 58.35 142.21 58.35 135.51 48.05 115.87 48.05"/>
+    <polygon points="157.03 48.05 141.39 48.05 148 58.2 148 94.22 157.03 94.22 159.8 94.22 181.72 94.22 181.72 84.06 159.8 84.06 159.8 76.24 171.09 76.24 171.09 66.31 159.8 66.31 159.8 58.2 181.72 58.2 181.72 48.05 159.8 48.05 157.03 48.05"/>
+    <path d="M227.73,48.05h-32c-3.91,0-7.08,3.17-7.08,7.08v32c0,3.91,3.17,7.08,7.08,7.08h32c3.91,0,7.08-3.17,7.08-7.08v-32c0-3.91-3.17-7.08-7.08-7.08ZM223.73,71.55c-.96,1.84-2.38,3.34-4.23,4.45s-4.14,1.67-6.8,1.67c-1.12,0-2.13-.1-2.98-.3l.41,3.77h13.13v8.18h-20.87l-1.77-17.15,4.22-3.92.57.43c.73.55,1.52.97,2.36,1.25.85.28,1.83.42,2.93.42.99,0,1.91-.19,2.71-.57.77-.37,1.38-.88,1.8-1.53.42-.65.64-1.46.64-2.41s-.21-1.72-.64-2.4c-.43-.68-1.01-1.19-1.78-1.55-.78-.38-1.72-.57-2.77-.57-1.26,0-2.43.25-3.49.74-1.03.48-1.82,1.11-2.34,1.88l-.57.85-6.28-6.22.53-.6c1.44-1.65,3.28-2.91,5.46-3.76,2.15-.84,4.49-1.27,6.93-1.27,2.83,0,5.33.54,7.45,1.62,2.13,1.08,3.81,2.58,5,4.46,1.2,1.89,1.8,4.07,1.8,6.48,0,2.19-.48,4.23-1.43,6.05Z"/>
+  </symbol>
+</svg>
+
+<div class="wrap">
+  <div class="topbar">
+    <a href="#" class="logo" aria-label="LYTE5"><svg><use href="#lyte5"/></svg></a>
+    <div class="tag">Functional Hydration Drink · 330 ml</div>
+  </div>
+</div>
+
+<!-- ===== 1 · 5 ELEKTROLYTŮ ===== -->
+<section>
+  <div class="wrap">
+    <div class="h-lead rv">
+      <div class="eyebrow">Co je uvnitř</div>
+      <h2 class="big">5 elektrolytů,<br>které potem ztrácíš</h2>
+      <p class="sub">Elektrolyty jsou nabité minerály přirozeně přítomné v tělních tekutinách. LYTE5 dodává pět z nich v dobře vstřebatelných formách (citrát, mléčnan, chloridy). Hodnoty v jedné plechovce (330&nbsp;ml):</p>
+    </div>
+    <div class="grid5">
+      <div class="el rv"><div class="amt">660<span class="u">mg</span></div><div class="sym">Na⁺ · sodík</div><div class="nm">Sodík</div><div class="role">Nejhojnější kationt mimobuněčné tekutiny. Hlavní minerál v potu.</div><div class="rhp">≈ 1,7 g soli</div></div>
+      <div class="el rv"><div class="amt">277<span class="u">mg</span></div><div class="sym">K⁺ · draslík</div><div class="nm">Draslík</div><div class="role">Kationt s vysokým zastoupením uvnitř buněk. Součást elektrolytového složení LYTE5.</div><div class="rhp">14 % RHP</div></div>
+      <div class="el rv"><div class="amt">66<span class="u">mg</span></div><div class="sym">Mg²⁺ · hořčík</div><div class="nm">Hořčík</div><div class="role">Hořčík přispívá k elektrolytové rovnováze a k normální funkci svalů.</div><div class="rhp">18 % RHP</div></div>
+      <div class="el rv"><div class="amt">198<span class="u">mg</span></div><div class="sym">Ca²⁺ · vápník</div><div class="nm">Vápník</div><div class="role">Vápník přispívá k normální činnosti svalů a k normálnímu přenosu nervových vzruchů.</div><div class="rhp">25 % RHP</div></div>
+      <div class="el rv"><div class="amt">1268<span class="u">mg</span></div><div class="sym">Cl⁻ · chloridy</div><div class="nm">Chloridy</div><div class="role">Chloridy přispívají k normálnímu trávení tvorbou kyseliny chlorovodíkové v žaludku.</div><div class="rhp">158,5 % RHP</div></div>
+    </div>
+    <div class="vits rv">
+      <div class="vit"><div class="v">50<small> mg</small></div><p><b>Vitamín C</b> — 63 % RHP. Přispívá ke snížení míry únavy a vyčerpání.</p></div>
+      <div class="vit"><div class="v">0,7<small> mg</small></div><p><b>Vitamín B6</b> — 50 % RHP. Přispívá ke snížení míry únavy a vyčerpání.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2 · VODA A MINERÁLY V ČÍSLECH ===== -->
+<section>
+  <div class="wrap">
+    <div class="h-lead rv">
+      <div class="eyebrow">Fyziologie hydratace</div>
+      <h2 class="big">Voda a minerály<br>v číslech</h2>
+      <p class="sub">Neutrální fyziologické údaje z EFSA a peer-reviewed studií — kolik vody tělo obsahuje, kolik potřebuje denně a co odchází potem. Vzdělávací kontext, ne tvrzení o produktu.</p>
+    </div>
+
+    <div class="fstats rv">
+      <div class="fstat">
+        <div class="num">60 <span class="u">%</span></div>
+        <div class="lb">Obsah vody v těle</div>
+        <p>Průměrný podíl u dospělého muže.</p>
+      </div>
+      <div class="fstat">
+        <div class="num">2,0 / 2,5 <span class="u">l</span></div>
+        <div class="lb">Denní příjem tekutin</div>
+        <p>Adekvátní příjem pro ženy / muže z nápojů i jídla (EFSA).</p>
+      </div>
+      <div class="fstat">
+        <div class="num">0,5–2 <span class="u">l/h</span></div>
+        <div class="lb">Rychlost pocení</div>
+        <p>Typické rozpětí při sportu a v horku.</p>
+      </div>
+      <div class="fstat">
+        <div class="num">~42 <span class="u">mmol/l</span></div>
+        <div class="lb">Sodík v potu</div>
+        <p>Průměr u sportovců (≈ 1 g soli na litr potu).</p>
+      </div>
+      <div class="fstat">
+        <div class="num">10–180 <span class="u">mmol/l</span></div>
+        <div class="lb">Individuální rozpětí Na v potu</div>
+        <p>Napříč populací, dle EFSA.</p>
+      </div>
+      <div class="fstat">
+        <div class="num">5</div>
+        <div class="lb">Elektrolytů v LYTE5</div>
+        <p>Sodík, draslík, hořčík, vápník a chloridy v jedné plechovce.</p>
+      </div>
+    </div>
+
+    <p class="adisc rv" style="margin-top:32px"><b>Sport, horko, dlouhý pobyt v suchém vzduchu nebo intenzivní práce</b> zvyšují potřebu tekutin i minerálů. LYTE5 kombinuje obojí v jedné sycené plechovce — pohodlně, bez míchání, s plným profilem 5 elektrolytů.</p>
+  </div>
+</section>
+
+<!-- ===== 3 · PROČ PLECHOVKA ===== -->
+<section>
+  <div class="wrap">
+    <div class="h-lead rv">
+      <div class="eyebrow">Proč právě plechovka</div>
+      <h2 class="big">Otevři, vypij,<br>hotovo</h2>
+      <p class="sub">Většina elektrolytů na trhu se prodává jako prášek nebo sáček, který si musíš někam zamíchat. LYTE5 jsme záměrně postavili jako <b style="color:#fff">první sycený elektrolytický nápoj v plechovce</b> — pro sportovce i pro každý aktivní den. Hydratace, která neřeší jenom závodníky.</p>
+    </div>
+
+    <div class="vs rv">
+      <div class="vs-side bad">
+        <div class="vh"><h3>Prášek / sáček</h3><span class="lbl">Jak to obvykle bývá</span></div>
+        <ul>
+          <li>Musíš mít s sebou láhev a vodu</li>
+          <li>Po tréninku míchat, ruce se ti klepou</li>
+          <li>Sáček nalepený na láhvi nebo zvlášť — obal navíc</li>
+          <li>Bez bublinek, často hustá nebo „chemická" chuť</li>
+          <li>Při míchání riziko nepřesného odměření</li>
+        </ul>
+      </div>
+      <div class="vs-side good">
+        <div class="vh"><h3>LYTE5 plechovka</h3><span class="lbl">Jak to děláme my</span></div>
+        <ul>
+          <li><b>Hotové složení</b> — žádné míchání, žádné odměřování</li>
+          <li><b>Jemně sycené</b> pro skutečné osvěžení</li>
+          <li><b>Otevři → vypij → hotovo</b>. I s rozklepanýma rukama.</li>
+          <li>Vždy stejný poměr složek, šarže za šarží</li>
+          <li>Hliník 100% recyklovatelný (♻ ALU)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feats rv">
+      <div class="feat"><div class="ft">First mover</div><div class="fl">První v plechu</div><p>První sycený elektrolyt v plechovce na českém trhu.</p></div>
+      <div class="feat"><div class="ft">Komplexnost</div><div class="fl">5 elektrolytů</div><p>Plný profil Na, K, Mg, Ca a Cl ve vstřebatelné formě.</p></div>
+      <div class="feat"><div class="ft">Formát</div><div class="fl">Ready to drink</div><p>Žádný prášek, žádné rozpouštění, žádné odměrky.</p></div>
+      <div class="feat"><div class="ft">Smysly</div><div class="fl">Sycené &amp; svěží</div><p>Pije se to jako limonáda, funguje jako iontový nápoj.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4 · 5 SITUACÍ ===== -->
+<section>
+  <div class="wrap">
+    <div class="h-lead rv">
+      <div class="eyebrow">Kdy sáhnout po LYTE5</div>
+      <h2 class="big">Pět situací,<br>kdy to oceníš</h2>
+    </div>
+    <div class="uses">
+      <div class="use rv"><div class="tag">Sport &amp; vytrvalost</div><h3>Trénink delší než hodinu</h3><p>Při zátěži delší než 1–2 hodiny, kdy dochází k nadměrnému pocení.</p></div>
+      <div class="use rv"><div class="tag">Horko &amp; léto</div><h3>Pohyb i pobyt v teple</h3><p>V teple roste pocení a s ním i potřeba tekutin a minerálů. LYTE5 přináší obojí v jednom osvěžujícím doušku.</p></div>
+      <div class="use rv"><div class="tag">Venku &amp; outdoor</div><h3>Túry, kolo, celý den venku</h3><p>Při několikahodinovém výkonu se ztráty sčítají. Průběžné doplňování tekutin pomáhá udržovat hydrataci během dlouhodobé zátěže.</p></div>
+      <div class="use rv"><div class="tag">Regenerace</div><h3>Po tréninku, sauně, party</h3><p>Po sportu, sauně nebo náročném dni LYTE5 nabízí tekutiny a 5 elektrolytů — bez cukru a zbytečných kalorií.</p></div>
+      <div class="use rv"><div class="tag">Každý den</div><h3>Klima, kancelář, málo pití</h3><p>Kanceláře s klimatizací a málo pití patří k dnešnímu dennímu rytmu. LYTE5 je hydratace bez sladké limonády.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 5 · KDY A JAK ČASTO PÍT ===== -->
+<section>
+  <div class="wrap">
+    <div class="h-lead rv">
+      <div class="eyebrow">Dávkování &amp; načasování</div>
+      <h2 class="big">Kdy a jak často<br>LYTE5 pít</h2>
+      <p class="sub">Doporučené množství je 1–2 plechovky LYTE5 denně, vyšší množství při zvýšené fyzické aktivitě. Načasování pak určuje, kdy elektrolyty a tekutiny dorazí — před, během nebo po pohybu.</p>
+    </div>
+
+    <div class="dosing rv">
+      <div class="dos-main">
+        <div class="dos-num">1–2</div>
+        <div class="dos-lab">plechovky / den</div>
+      </div>
+      <div class="dos-side">
+        <p><b>Vyšší množství</b> (až 2 plechovky) zvol při zvýšené fyzické aktivitě, dlouhém pobytu v horku nebo intenzivním pocení.</p>
+        <p><b>Nepřekračuj</b> doporučené denní množství.</p>
+        <p><b>Servíruj chlazené</b>, před otevřením lehce promíchej.</p>
+      </div>
+    </div>
+
+    <h3 class="block-h">Aktivita → obsah LYTE5</h3>
+    <p class="block-sub">Odhadované ztráty sodíku potem u typických aktivit a odpovídající obsah v plechovkách LYTE5 (jedna plechovka = 660 mg sodíku). Hodnoty jsou orientační — individuální rozdíly mohou být velké.</p>
+
+    <div class="atrans rv">
+      <div class="acard">
+        <div class="atype">Silový trénink 60 min</div>
+        <div class="actx">posilovna, klimatizováno</div>
+        <div class="aloss">≈ 400–650 mg<span>sodíku v potu</span></div>
+        <div class="acans">≈ 1 plechovka</div>
+      </div>
+      <div class="acard">
+        <div class="atype">Běh 10 km</div>
+        <div class="actx">mírné počasí, ~60 min</div>
+        <div class="aloss">≈ 600–800 mg<span>sodíku v potu</span></div>
+        <div class="acans">≈ 1 plechovka</div>
+      </div>
+      <div class="acard">
+        <div class="atype">Intervaly 6× km</div>
+        <div class="actx">vysoká intenzita, ~50 min</div>
+        <div class="aloss">≈ 800–1100 mg<span>sodíku v potu</span></div>
+        <div class="acans">≈ 1–2 plechovky</div>
+      </div>
+      <div class="acard">
+        <div class="atype">Fotbal / hokej 90 min</div>
+        <div class="actx">léto, 25–30 °C</div>
+        <div class="aloss">≈ 1500–2200 mg<span>sodíku v potu</span></div>
+        <div class="acans">≈ 2 plechovky</div>
+      </div>
+      <div class="acard">
+        <div class="atype">HYROX závod</div>
+        <div class="actx">60–90 min, max úsilí</div>
+        <div class="aloss">≈ 1500–2200 mg<span>sodíku v potu</span></div>
+        <div class="acans">≈ 2 plechovky</div>
+      </div>
+      <div class="acard">
+        <div class="atype">8 h cesta autem</div>
+        <div class="actx">klima, suchý vzduch</div>
+        <div class="aloss">ztráta elektrolytů<span>bez velkého pocení</span></div>
+        <div class="acans">≈ 1–2 plechovky cestou</div>
+      </div>
+    </div>
+    <p class="adisc"><b>Doporučené denní množství: 2 plechovky.</b> U extrémně dlouhých aktivit (ultra-závody, celodenní pobyt v horku) je vhodné kombinovat s vodou, jídlem a další sportovní výživou.</p>
+
+    <h3 class="block-h">Denní načasování</h3>
+    <div class="timeline rv">
+      <div class="step">
+        <div class="t">PO PROBUZENÍ</div>
+        <div class="dot"></div>
+        <h4>Restart hydratace</h4>
+        <p>Přes noc tělo přirozeně ztrácí 300–500 ml vody. LYTE5 je jeden ze způsobů, jak začít den s tekutinami a 5 elektrolyty.</p>
+      </div>
+      <div class="step">
+        <div class="t">30–60 MIN PŘED</div>
+        <div class="dot"></div>
+        <h4>Pre-load</h4>
+        <p>Před delší zátěží, závodem nebo dlouhým časem v horku je vhodné být hydratovaný. LYTE5 kombinuje tekutiny a elektrolyty.</p>
+      </div>
+      <div class="step">
+        <div class="t">BĚHEM AKTIVITY</div>
+        <div class="dot"></div>
+        <h4>Průběžně po doušcích</h4>
+        <p>U delší zátěže je vhodné pít průběžně po doušcích. LYTE5 přináší osvěžení, tekutiny a 5 elektrolytů.</p>
+      </div>
+      <div class="step">
+        <div class="t">DO 30 MIN PO</div>
+        <div class="dot"></div>
+        <h4>Recovery okno</h4>
+        <p>Po tréninku, sauně nebo dlouhé akci je vhodné doplnit tekutiny a minerály. LYTE5 přináší obojí v jedné plechovce.</p>
+      </div>
+    </div>
+
+    <h3 class="block-h">Situace, kdy to dává smysl navíc</h3>
+    <div class="scens">
+      <div class="scen"><div class="tg">Po dlouhé cestě</div><p>Let, vlak, auto s klimatizací — málo se pije a vzduch suší. <b>LYTE5 na konec cesty</b> přinese tekutiny i minerály.</p></div>
+      <div class="scen"><div class="tg">Sauna &amp; wellness</div><p>Za 20 min sauny můžeš ztratit přes 0,5 l potu. Pij <b>po procesu</b> — ne přímo během, kdy chceš spíš vodu.</p></div>
+      <div class="scen"><div class="tg">Vlna veder</div><p>Při teplotách <b>nad 28 °C</b> roste pocení i bez sportu. Zvaž druhou plechovku během dne.</p></div>
+      <div class="scen"><div class="tg">Aktivní den v přírodě</div><p>Túry, výlety, celý den venku. LYTE5 se pohodlně vejde do batohu a přináší <b>tekutiny i 5 elektrolytů</b> v jedné plechovce.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 6 · SCHVÁLENÁ TVRZENÍ ===== -->
+<section>
+  <div class="wrap">
+    <div class="h-lead rv">
+      <div class="eyebrow">EU schválená tvrzení</div>
+      <h2 class="big">Co o elektrolytech<br>smíme tvrdit</h2>
+      <p class="sub">Zdravotní tvrzení schválená legislativou EU — Nařízení Komise (EU) č.&nbsp;432/2012. Uvedena pouze u složek, u nichž LYTE5 splňuje minimální obsah pro použití tvrzení (nejméně 15&nbsp;% referenční hodnoty příjmu).</p>
+    </div>
+
+    <div class="claims rv">
+      <div class="claim">
+        <div class="ch"><h3>Hořčík</h3><span class="sym">Mg²⁺</span></div>
+        <ul>
+          <li>Přispívá k <b>elektrolytové rovnováze</b>.</li>
+          <li>Přispívá ke snížení míry <b>únavy a vyčerpání</b>.</li>
+          <li>Přispívá k <b>normální funkci svalů</b>.</li>
+          <li>Přispívá k normální činnosti <b>nervové soustavy</b>.</li>
+          <li>Přispívá k normálnímu <b>energetickému metabolismu</b>.</li>
+        </ul>
+      </div>
+
+      <div class="claim">
+        <div class="ch"><h3>Vápník</h3><span class="sym">Ca²⁺</span></div>
+        <ul>
+          <li>Přispívá k <b>normální činnosti svalů</b>.</li>
+          <li>Přispívá k <b>normálnímu přenosu nervových vzruchů</b>.</li>
+          <li>Přispívá k normálnímu <b>energetickému metabolismu</b>.</li>
+          <li>Podílí se na <b>procesu dělení a specializace buněk</b>.</li>
+        </ul>
+      </div>
+
+      <div class="claim">
+        <div class="ch"><h3>Chloridy</h3><span class="sym">Cl⁻</span></div>
+        <ul>
+          <li>Přispívají k <b>normálnímu trávení</b> tvorbou kyseliny chlorovodíkové v žaludku.</li>
+        </ul>
+      </div>
+
+      <div class="claim">
+        <div class="ch"><h3>Vitamín C</h3><span class="sym">L-askorbová</span></div>
+        <ul>
+          <li>Přispívá ke snížení míry <b>únavy a vyčerpání</b>.</li>
+          <li>Přispívá k normálnímu <b>energetickému metabolismu</b>.</li>
+          <li>Přispívá k normální funkci <b>imunitního systému</b>.</li>
+          <li>Přispívá k <b>ochraně buněk před oxidativním stresem</b>.</li>
+        </ul>
+      </div>
+
+      <div class="claim">
+        <div class="ch"><h3>Vitamín B6</h3><span class="sym">pyridoxin</span></div>
+        <ul>
+          <li>Přispívá ke snížení míry <b>únavy a vyčerpání</b>.</li>
+          <li>Přispívá k normálnímu <b>energetickému metabolismu</b>.</li>
+          <li>Přispívá k normální činnosti <b>nervové soustavy</b>.</li>
+          <li>Přispívá k <b>normální psychické činnosti</b>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sodium rv">
+      <div class="lbl">Sodík<small>Na⁺</small></div>
+      <p>U sodíku nejsou v EU schválena žádná pozitivní zdravotní tvrzení (Nařízení 432/2012). Uveden zde proto pouze jako složka složení.</p>
+    </div>
+
+    <div class="sodium rv">
+      <div class="lbl">Draslík<small>K⁺</small></div>
+      <p>Draslík má v EU schválené tvrzení: <b>Přispívá k normální činnosti svalů, nervové soustavy a k udržení normálního krevního tlaku.</b> Pro jeho uvedení ale produkt musí obsahovat alespoň <b>15&nbsp;%</b> referenční hodnoty příjmu na porci. Jedna plechovka LYTE5 obsahuje <b>14&nbsp;%</b> RHP, těsně pod hranicí — proto zde není tvrzení komerčně uvedeno.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 7 · FAQ ===== -->
+<section>
+  <div class="wrap">
+    <div class="h-lead rv">
+      <div class="eyebrow">Časté dotazy</div>
+      <h2 class="big">Často kladené dotazy</h2>
+    </div>
+    <div class="faq rv">
+      <details><summary>Jak často LYTE5 pít?<span class="pl">+</span></summary><p>Doporučené množství je <b>1–2 plechovky denně</b>, vyšší při zvýšené fyzické aktivitě. Konzumuj chlazené, před otevřením lehce promíchej. Nepřekračuj doporučené denní množství.</p></details>
+      <details><summary>Kdy stačí voda a kdy LYTE5?<span class="pl">+</span></summary><p>Na kratší a mírnou aktivitu obvykle stačí voda. LYTE5 dává největší smysl u zátěže <b>nad ~1–2&nbsp;h</b>, při velkém pocení, v horku, při regeneraci a u lidí s <b>vyšší ztrátou soli potem</b> (typický signál: bílé solné šmouhy na tmavém oblečení po zaschnutí potu).</p></details>
+      <details><summary>Obsahuje kofein?<span class="pl">+</span></summary><p>Jen příchuť <b>Cola (BOOST)</b> — 17,9&nbsp;mg kofeinu/100&nbsp;ml, tj. <b>≈&nbsp;59&nbsp;mg na plechovku</b>. Pro představu: zhruba <b>jako jedno espresso</b> nebo <b>3/4 plechovky energetického drinku</b>. Má vysoký obsah kofeinu a <b>není vhodná pro děti ani těhotné a kojící ženy</b>. Cucumber a Lemon Lime jsou bez kofeinu.</p></details>
+      <details><summary>Kolik je v něm cukru?<span class="pl">+</span></summary><p>Velmi málo. Cola a Cucumber mají <b>2,6&nbsp;g cukru a ~10 kcal</b> na plechovku, Lemon Lime jen <b>1,7&nbsp;g cukru a 8 kcal</b>. Sladí se hlavně erythritolem (u Coly i steviol-glykosidy).</p></details>
+      <details><summary>Proč „extra vstřebatelná forma"?<span class="pl">+</span></summary><p>Elektrolyty jsou dodány jako dobře rozpustné soli — <b>citronan vápenatý, mléčnan hořečnatý, chlorid sodný a draselný</b> — tedy ve formách, které tělo snadno přijme.</p></details>
+      <details><summary>Můžu LYTE5 pít každý den?<span class="pl">+</span></summary><p>Ano — doporučené množství je <b>1–2 plechovky denně</b>. Vyšší při sportu, v horku nebo po sauně. Zároveň sleduj celkový příjem soli ze stravy — cílem je rovnováha, ne maximum.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 8 · REFERENCE ===== -->
+<section class="refs">
+  <div class="wrap rv">
+    <div class="eyebrow">Zdroje</div>
+    <h2 class="big">Reference</h2>
+    <ol>
+      <li><em>EFSA Panel (NDA).</em> Dietary Reference Values for water. EFSA Journal, 2010. (Voda ≈ 60 % hmotnosti; adekvátní příjem 2,0 l ženy / 2,5 l muži.)</li>
+      <li><em>Baker LB.</em> Sweating Rate and Sweat Sodium Concentration in Athletes. Sports Med, 2017; normativní data dle sportu, J Sports Sci, 2019.</li>
+      <li><em>EFSA Panel (NDA).</em> Dietary Reference Values for sodium, 2019. (Sodík v potu 10–180 mmol/l.)</li>
+      <li><em>Meta-analýza 14 studií</em> — pokles výkonu od ~2 % ztráty hmotnosti, zejména v teple (J Athl Train, Trail Running).</li>
+      <li><em>Armstrong LE a kol.</em> Influence of diuretic-induced dehydration on running performance. Med Sci Sports Exerc, 1985.</li>
+      <li><em>Sawka MN a kol.</em> 1985 — kapacita pro vysoce intenzivní zátěž ↓ až 45 % při ztrátě ~2,5 %.</li>
+      <li><em>Ganio MS a kol.</em> 2006 — VO₂max a pracovní kapacita v horku ↓ 9–12 % při 4 % ztrátě tělesné hmotnosti tekutinami.</li>
+      <li><em>Deshayes TA a kol.</em> 2022 — meta-analýza vlivu ztráty tekutin na RPE; HR ~ +3 tepy/min na 1 %.</li>
+      <li><em>Armstrong LE / Ganio MS a kol.</em> Mild dehydration affects mood and cognition. J Nutr 2012; Br J Nutr 2011.</li>
+      <li><em>Maughan RJ a kol.</em> Development of a beverage hydration index. Am J Clin Nutr, 2016.</li>
+      <li><em>Nose H, Mack GW; Maughan &amp; Leiper.</em> Role sodíku při obnově tělních tekutin. J Appl Physiol, 1988/1998.</li>
+      <li><em>Hew-Butler T a kol.</em> Exercise-Associated Hyponatremia consensus, 2015; Almond CSD a kol., NEJM 2005.</li>
+      <li><em>Schwellnus MP; Bergeron MF.</em> Etiologie svalových křečí — nervosvalová vs. elektrolytová teorie.</li>
+      <li><em>Nařízení (EU) č. 432/2012</em> — schválená zdravotní tvrzení (hořčík, draslík, vápník, chloridy, vitamíny C a B6).</li>
+    </ol>
+    <div class="disc"><b>Upozornění:</b> Nepřekračujte doporučené denní množství. Ukládejte mimo dosah dětí. Příchuť Cola obsahuje vysoké množství kofeinu (17,9&nbsp;mg/100&nbsp;ml) a není vhodná pro děti, těhotné a kojící ženy. Odkazy na výzkum slouží jako obecný vzdělávací kontext o hydrataci a elektrolytech, nejsou zdravotními tvrzeními o produktu. Pro účinky LYTE5 platí pouze schválená tvrzení dle Nařízení (EU) 432/2012 uvedená v sekci „Schválená tvrzení". Vyrobeno v ČR — SOR GEAR s.r.o.</div>
+  </div>
+</section>
+
+<footer class="ft">
+  <div class="wrap">
+    <a href="#" class="logo lg" aria-label="LYTE5"><svg><use href="#lyte5"/></svg></a>
+    <div class="keep">KEEP IT LYTE.</div>
+    <div class="co">SOR GEAR s.r.o. · 1. máje 34/120, 703 00 Ostrava · IČ 21328498 · sorgear.com<br>Functional Hydration Drink · 5 Key Electrolytes · Low Sugar · 330 ml</div>
+  </div>
+</footer>
+
+<script>
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});
+  document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
